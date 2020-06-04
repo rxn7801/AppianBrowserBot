@@ -49,7 +49,9 @@ public class RobotBrowserTemplate implements IRobot {
 
     private String lastName;
 
-    private String policyNumber;
+    private String accountNumber;
+
+    private String sortCode;
 
     private String postCode;
 
@@ -127,11 +129,13 @@ public class RobotBrowserTemplate implements IRobot {
 
         By lName = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[1]/td/div/input");
         By dob = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[2]/td/div/input");
-        By pol = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[3]/td/div/input");
-        By pCode = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[4]/td/div/input");
+        By accNumber = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[3]/td/div/input");
+        By sortCd = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[4]/td/div/input");
+        By pCode = By.xpath("/html/body/div/div/div[1]/form/table/tbody/tr[5]/td/div/input");
         browser.textFieldSet(lName,lastName,true);
         browser.textFieldSet(dob,dateOfBirth,true);
-        browser.textFieldSet(pol,policyNumber,true);
+        browser.textFieldSet(accNumber,accountNumber,true);
+        browser.textFieldSet(sortCd,sortCode,true);
         browser.textFieldSet(pCode,postCode,true);
 
         browser.clickOnElement(By.xpath("/html/body/div/div/div[1]/form/div/input"));
@@ -150,30 +154,35 @@ public class RobotBrowserTemplate implements IRobot {
             int lastNamePos = 0;
             int postCodePos = 0;
             int dobPos = 0;
-            int policyNoPos = 0;
+            int accountNoPos = 0;
+            int sortCodePos = 0;
 
             for (int i = 0; i < th.size(); i++) {
                 if ("Last Name".equalsIgnoreCase(th.get(i).getText())) {
                     lastNamePos = i + 1;
                 } else if ("Date of Birth".equalsIgnoreCase(th.get(i).getText())) {
                     dobPos = i + 1;
-                } else if ("Policy #".equalsIgnoreCase(th.get(i).getText())) {
-                    policyNoPos = i + 1;
-                } else if ("Post Code".equalsIgnoreCase(th.get(i).getText())) {
+                } else if ("Account Number".equalsIgnoreCase(th.get(i).getText())) {
+                    accountNoPos = i + 1;
+                } else if ("Sort Code".equalsIgnoreCase(th.get(i).getText())) {
+                    sortCodePos = i + 1;
+                }  else if ("Post Code".equalsIgnoreCase(th.get(i).getText())) {
                     postCodePos = i + 1;
                 }
             }
 
             List<WebElement> lastNameElements = table.findElements(By.xpath("//tr/td[" + lastNamePos + "]"));
             List<WebElement> dobElements = table.findElements(By.xpath("//tr/td[" + dobPos + "]"));
-            List<WebElement> policyElements = table.findElements(By.xpath("//tr/td[" + policyNoPos + "]"));
+            List<WebElement> accountElements = table.findElements(By.xpath("//tr/td[" + accountNoPos + "]"));
+            List<WebElement> sortCodeElements = table.findElements(By.xpath("//tr/td[" + sortCodePos + "]"));
             List<WebElement> postCodeElements = table.findElements(By.xpath("//tr/td[" + postCodePos + "]"));
 
             for (int i = 0; i < lastNameElements.size(); i++) {
                 WebElement e = lastNameElements.get(i);
                 if (e.getText().trim().equalsIgnoreCase(lastName)) {
                     if (dobElements.get(i).getText().trim().equalsIgnoreCase(dateOfBirth)
-                            && policyElements.get(i).getText().trim().equalsIgnoreCase(policyNumber)
+                            && accountElements.get(i).getText().trim().equalsIgnoreCase(accountNumber)
+                            && sortCodeElements.get(i).getText().trim().equalsIgnoreCase(sortCode)
                             && postCodeElements.get(i).getText().trim().equalsIgnoreCase(postCode)) {
                         resultMap.put("matchFound", "true");
                         break;
